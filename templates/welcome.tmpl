@@ -1,14 +1,19 @@
+{{define "content"}}
 <a href="https://github.com/nilbus/pinewood-derby" target="_blank" class="visible-desktop">
-  <img src="/images/forkme_right_darkblue_121621.png" style="position: absolute; top: 40px; right: 0; border: 0;" alt="Fork me on GitHub" %>
+  <img src="/images/forkme_right_darkblue_121621.png" style="position: absolute; top: 40px; right: 0; border: 0;" alt="Fork me on GitHub">
 </a>
 <div class="jumbotron">
   <h2>It's race time...</h2>
   <h1>dooo your best!</h1>
   <p><a href="board_path" class="btn btn-large btn-success">Watch the race</a></p>
   <p>Connect to this app from other devices<p>
-  <code><i class="icon-share"></i> <%= @url || 'git dis thingy online furst' %></code>
-  <% if DerbyConfig.admin_password %>
+  <code>
+    <i class="icon-share"></i>
+    <!-- <%= @url || 'git dis thingy online furst' %> -->
+  </code>
+  <!-- <% if DerbyConfig.admin_password %> -->
     <p><a href="/login" class="btn btn-info">Run the race</a></p>
-  <% end %>
-  <%= render 'forkme', mobile: true %>
+  <!-- <% end %> -->
+  <!-- <%= render 'forkme', mobile: true %> -->
 </div>
+{{end}}
