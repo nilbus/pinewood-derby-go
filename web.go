@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"unicode"
 
 	"github.com/shaoshing/train"
 )
@@ -18,6 +20,56 @@ func ServeWeb() {
 
 func configureRoutes() {
 	http.HandleFunc("/", handleWelcome)
+	restfulResource("contestants")
+}
+
+type restfulHandlerFunc func(http.ResponseWriter, *http.Request, string)
+
+var restfulHandlers = map[string]restfulHandlerFunc{}
+
+func restfulResource(resourceName string) {
+	routeRestfulRequest := func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+		resource := path[len("/"+resourceName):len(path)]
+		if len(resource) == 0 {
+			resource = "/"
+		}
+		resource = r.Method + " " + resource
+		action := "404"
+		var id string
+		switch {
+		case resource == "GET /":
+			action = "Index"
+		case resource == "POST /":
+			action = "Create"
+		case strings.HasPrefix(resource, "GET /"):
+			id = resource[len("GET /"):len(resource)]
+			switch {
+			case strings.HasSuffix(id, "/new"):
+				id = id[0 : len(id)-len("/new")]
+				action = "New"
+			case strings.HasSuffix(id, "/edit"):
+				id = id[0 : len(id)-len("/edit")]
+				action = "Edit"
+			default:
+				action = "Show"
+			}
+		case strings.HasPrefix(resource, "POST /"):
+			id = resource[len("POST /"):len(resource)]
+			action = "Update"
+		case strings.HasPrefix(resource, "DELETE /"):
+			id = resource[len("DELETE /"):len(resource)]
+			action = "Delete"
+		}
+		handler := restfulHandlers["handle"+capitalize(resourceName)+action]
+		if handler == nil {
+			w.Write([]byte("REST 404"))
+		} else {
+			handler(w, r, id)
+		}
+	}
+	http.HandleFunc("/"+resourceName, routeRestfulRequest)
+	http.HandleFunc("/"+resourceName+"/", routeRestfulRequest)
 }
 
 func handleWelcome(w http.ResponseWriter, r *http.Request) {
@@ -48,4 +100,11 @@ func configureTrain() {
 	train.Config.SASS.LineNumbers = true
 	train.Config.Verbose = true
 	train.ConfigureHttpHandler(nil)
+}
+
+func capitalize(str string) string {
+	for i, v := range str {
+		return string(unicode.ToUpper(v)) + str[i+1:]
+	}
+	return ""
 }
