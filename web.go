@@ -24,9 +24,45 @@ func configureRoutes() {
 	restfulResource("contestants")
 }
 
-type restfulHandlerFunc func(http.ResponseWriter, *http.Request, string)
+var restfulHandlers = map[string]restfulHandlerFunc{
+	"handleContestantsIndex":  handleContestantsIndex,
+	"handleContestantsNew":    handleContestantsNew,
+	"handleContestantsCreate": handleContestantsCreate,
+	"handleContestantsShow":   handleContestantsShow,
+	"handleContestantsEdit":   handleContestantsEdit,
+	"handleContestantsUpdate": handleContestantsUpdate,
+	"handleContestantsDelete": handleContestantsDelete,
+}
 
-var restfulHandlers = map[string]restfulHandlerFunc{}
+func handleContestantsIndex(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants index")
+}
+
+func handleContestantsNew(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants new")
+}
+
+func handleContestantsCreate(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants create")
+}
+
+func handleContestantsShow(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants show "+id)
+}
+
+func handleContestantsEdit(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants edit "+id)
+}
+
+func handleContestantsUpdate(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants update "+id)
+}
+
+func handleContestantsDelete(w http.ResponseWriter, r *http.Request, id string) {
+	fmt.Fprint(w, "contestants delete "+id)
+}
+
+type restfulHandlerFunc func(http.ResponseWriter, *http.Request, string)
 
 func restfulResource(resourceName string) {
 	routeRestfulRequest := func(w http.ResponseWriter, r *http.Request) {
