@@ -94,8 +94,7 @@ func restfulResource(resourceName string) {
 		case strings.HasPrefix(resource, "GET /"):
 			id = resource[len("GET /"):len(resource)]
 			switch {
-			case strings.HasSuffix(id, "/new"):
-				id = id[0 : len(id)-len("/new")]
+			case id == "new":
 				action = "New"
 			case strings.HasSuffix(id, "/edit"):
 				id = id[0 : len(id)-len("/edit")]
