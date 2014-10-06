@@ -51,7 +51,8 @@ func handleContestantsNew(w http.ResponseWriter, r *http.Request, id string) {
 }
 
 func handleContestantsCreate(w http.ResponseWriter, r *http.Request, id string) {
-	fmt.Fprint(w, "contestants create")
+	contestantName := r.PostFormValue("name")
+	render("contestants/new", w, "Registered "+contestantName)
 }
 
 func handleContestantsShow(w http.ResponseWriter, r *http.Request, id string) {

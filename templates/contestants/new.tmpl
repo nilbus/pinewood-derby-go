@@ -1,4 +1,11 @@
 {{define "content"}}
+
+{{if .}}
+  <div class="alert alert-success">
+    <div>{{.}}</div>
+  </div>
+{{end}}
+
 <h2>Register a contestant</h2>
 
 <form action="/contestants" method="POST">
