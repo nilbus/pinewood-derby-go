@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -63,7 +64,8 @@ func restfulResource(resourceName string) {
 		}
 		handler := restfulHandlers["handle"+capitalize(resourceName)+action]
 		if handler == nil {
-			w.Write([]byte("REST 404"))
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprint(w, "404 Not Found")
 		} else {
 			handler(w, r, id)
 		}
