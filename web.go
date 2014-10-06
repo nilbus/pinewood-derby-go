@@ -19,6 +19,10 @@ func ServeWeb() {
 	log.Fatal(err)
 }
 
+////////////////////////////
+// Route Setup and Handlers
+////////////////////////////
+
 func configureRoutes() {
 	http.HandleFunc("/", handleWelcome)
 	restfulResource("contestants")
@@ -63,6 +67,10 @@ func handleContestantsDelete(w http.ResponseWriter, r *http.Request, id string) 
 }
 
 type restfulHandlerFunc func(http.ResponseWriter, *http.Request, string)
+
+///////////
+// Helpers
+///////////
 
 func restfulResource(resourceName string) {
 	routeRestfulRequest := func(w http.ResponseWriter, r *http.Request) {
