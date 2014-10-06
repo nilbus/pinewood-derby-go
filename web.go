@@ -28,6 +28,10 @@ func configureRoutes() {
 	restfulResource("contestants")
 }
 
+func handleWelcome(w http.ResponseWriter, r *http.Request) {
+	render("welcome", w, nil)
+}
+
 var restfulHandlers = map[string]restfulHandlerFunc{
 	"handleContestantsIndex":  handleContestantsIndex,
 	"handleContestantsNew":    handleContestantsNew,
@@ -118,16 +122,16 @@ func restfulResource(resourceName string) {
 	http.HandleFunc("/"+resourceName+"/", routeRestfulRequest)
 }
 
-func handleWelcome(w http.ResponseWriter, r *http.Request) {
+func render(templateName string, w http.ResponseWriter, data interface{}) {
 	funcs := template.FuncMap{
 		"javascript_tag": train.JavascriptTag,
 		"stylesheet_tag": train.StylesheetTag,
 	}
-	tmpl, err := template.New("layout.tmpl").Funcs(funcs).ParseFiles("templates/layout.tmpl", "templates/welcome.tmpl")
+	tmpl, err := template.New("layout.tmpl").Funcs(funcs).ParseFiles("templates/layout.tmpl", "templates/"+templateName+".tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
