@@ -1,0 +1,14 @@
+{{define "content"}}
+<h2>Register a contestant</h2>
+
+<form action="/contestants" method="POST">
+  <div class="field">
+    <input name="name" id="contestant_name" placeholder="First name" autocomplete="off">
+  </div>
+  <div class="actions">
+    <input type="submit" value="Register">
+  </div>
+</form>
+
+<a href="/contestants">Done registering</a>
+{{end}}

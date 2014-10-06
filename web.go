@@ -47,7 +47,7 @@ func handleContestantsIndex(w http.ResponseWriter, r *http.Request, id string) {
 }
 
 func handleContestantsNew(w http.ResponseWriter, r *http.Request, id string) {
-	fmt.Fprint(w, "contestants new")
+	render("contestants/new", w, nil)
 }
 
 func handleContestantsCreate(w http.ResponseWriter, r *http.Request, id string) {
