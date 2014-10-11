@@ -8,9 +8,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var db gorm.DB
+
 func ConnectDB() {
 	dbFile := "db.sqlite3"
-	db, err := gorm.Open("sqlite3", dbFile)
+	var err error
+	db, err = gorm.Open("sqlite3", dbFile)
 	if err != nil {
 		log.Fatal("Failed to open the database " + dbFile)
 	}
@@ -22,7 +25,7 @@ func ConnectDB() {
 type Contestant struct {
 	Id      int32
 	Name    string
-	Retured bool
+	Retired bool `sql:"not null;default false"`
 	Runs    []Run
 }
 

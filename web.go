@@ -52,6 +52,8 @@ func handleContestantsNew(w http.ResponseWriter, r *http.Request, id string) {
 
 func handleContestantsCreate(w http.ResponseWriter, r *http.Request, id string) {
 	contestantName := r.PostFormValue("name")
+	contestant := Contestant{Name: contestantName}
+	db.Create(&contestant)
 	render("contestants/new", w, "Registered "+contestantName)
 }
 
