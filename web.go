@@ -91,6 +91,10 @@ func restfulResource(resourceName string) {
 		var id string
 		switch {
 		case resource == "GET /":
+			if path[len(path)-1:len(path)] == "/" {
+				http.Redirect(w, r, path[0:len("/"+resourceName)], http.StatusFound)
+				return
+			}
 			action = "Index"
 		case resource == "POST /":
 			action = "Create"
