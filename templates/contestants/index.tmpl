@@ -7,9 +7,11 @@
         <tr>
           <th>Name</th>
           <th>Average</th>
+          {{/*
           {{range eachLane}}
             <th>Round {{.}}</th>
           {{end}}
+          */}}
           <th></th>
         </tr>
       </thead>
@@ -30,18 +32,18 @@
               {{.AverageTime}}
             {{end}}
           </td>
+          {{/*
           {{range eachLane}}
             <td></td>
           {{end}}
           <td>
-            <!--
             {{if .Retired}}
               <%= link_to 'reactivate', reactivate_contestant_path(contestant), method: :post, class: 'retire', style: 'display: none' %>
             {{else}}
               <%= link_to 'retire', contestant, method: :delete, data: { confirm: "Are you sure? #{j contestant.name} will be taken out of the race." }, class: 'retire', style: 'display: none' %>
             {{end}}
-            -->
           </td>
+          */}}
         </tr>
       {{end}}
     </tbody>
