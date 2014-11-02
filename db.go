@@ -23,10 +23,11 @@ func ConnectDB() {
 }
 
 type Contestant struct {
-	Id      int32
-	Name    string
-	Retired bool `sql:"not null;default false"`
-	Runs    []Run
+	Id          int32
+	Name        string
+	Retired     bool `sql:"not null;default false"`
+	Runs        []Run
+	AverageTime float32
 }
 
 type Heat struct {

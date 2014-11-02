@@ -1,0 +1,56 @@
+{{define "content"}}
+  <h1>Contestants</h1>
+
+  <table id="contestants">
+    {{if .}}
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Average</th>
+          {{range eachLane}}
+            <th>Round {{.}}</th>
+          {{end}}
+          <th></th>
+        </tr>
+      </thead>
+    {{ end }}
+
+    <tbody>
+      {{range .}}
+        <tr class="contestant">
+          <td class="{{if .Retired}}retired{{end}}">
+          {{if admin}}
+            <a href="/contestants/{{.Id}}/edit">{{.Name}}</a>
+          {{else}}
+            <%= contestant.name %>
+          {{end}}
+          </td>
+          <td>
+            {{if .AverageTime}}
+              {{.AverageTime}}
+            {{end}}
+          </td>
+          {{range eachLane}}
+            <td></td>
+          {{end}}
+          <td>
+            <!--
+            {{if .Retired}}
+              <%= link_to 'reactivate', reactivate_contestant_path(contestant), method: :post, class: 'retire', style: 'display: none' %>
+            {{else}}
+              <%= link_to 'retire', contestant, method: :delete, data: { confirm: "Are you sure? #{j contestant.name} will be taken out of the race." }, class: 'retire', style: 'display: none' %>
+            {{end}}
+            -->
+          </td>
+        </tr>
+      {{end}}
+    </tbody>
+  </table>
+
+  <br>
+
+  {{if admin}}
+    <a href="/contestants/new" class="btn btn-primary">Register contestants</a>
+    <!-- <a href="js:(post reset derby path w/ confirmation)" class="btn btn-danger pull-right">Reset derby data</a> -->
+  {{end}}
+{{end}}

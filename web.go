@@ -43,7 +43,9 @@ var restfulHandlers = map[string]restfulHandlerFunc{
 }
 
 func handleContestantsIndex(w http.ResponseWriter, r *http.Request, id string) {
-	fmt.Fprint(w, "contestants index")
+	var contestants []Contestant
+	db.Find(&contestants)
+	render("contestants/index", w, contestants)
 }
 
 func handleContestantsNew(w http.ResponseWriter, r *http.Request, id string) {
@@ -132,6 +134,9 @@ func render(templateName string, w http.ResponseWriter, data interface{}) {
 	funcs := template.FuncMap{
 		"javascript_tag": train.JavascriptTag,
 		"stylesheet_tag": train.StylesheetTag,
+		"admin":          func() bool { return true },
+		"derbyConfig":    func(key string) interface{} { return derbyConfig[key] },
+		"eachLane":       eachLane,
 	}
 	tmpl, err := template.New("layout.tmpl").Funcs(funcs).ParseFiles("templates/layout.tmpl", "templates/"+templateName+".tmpl")
 	if err != nil {
@@ -140,6 +145,14 @@ func render(templateName string, w http.ResponseWriter, data interface{}) {
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func eachLane() []int {
+	lanes := []int{}
+	for i := 1; i <= derbyConfig["laneCount"].(int); i++ {
+		lanes = append(lanes, i)
+	}
+	return lanes
 }
 
 // Return the $PORT environment variable, or "3000" otherwise
