@@ -47,6 +47,6 @@
   </div> <!-- /container -->
 </body>
 <script>
-  // window.alerts = new Announcer({type: '<%= current_page?(board_path) ? "dashboard" : "alerts" %>', stats: <%= Dashboard.to_json.html_safe %>, admin: <%= admin? %>})
+  window.alerts = new Announcer({type: 'dashboard', stats: {{dashboardJson}}, admin: {{admin}}})
 </script>
 </html>

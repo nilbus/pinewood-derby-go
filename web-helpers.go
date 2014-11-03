@@ -78,6 +78,7 @@ func render(templateName string, w http.ResponseWriter, data interface{}) {
 		"derbyConfig":     func(key string) interface{} { return derbyConfig[key] },
 		"eachLane":        eachLane,
 		"laneColumnWidth": laneColumnWidth,
+		"dashboardJson":   DashboardJson,
 	}
 	tmpl, err := template.New("layout.tmpl").Funcs(funcs).ParseFiles("templates/layout.tmpl", "templates/"+templateName+".tmpl")
 	if err != nil {
