@@ -7,11 +7,16 @@ import (
 
 func configureRoutes() {
 	http.HandleFunc("/", handleWelcome)
+	http.HandleFunc("/board", handleDashboard)
 	restfulResource("contestants")
 }
 
 func handleWelcome(w http.ResponseWriter, r *http.Request) {
 	render("welcome", w, nil)
+}
+
+func handleDashboard(w http.ResponseWriter, r *http.Request) {
+	render("dashboard", w, nil)
 }
 
 var restfulHandlers = map[string]restfulHandlerFunc{

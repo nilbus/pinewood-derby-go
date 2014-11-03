@@ -72,11 +72,12 @@ func restfulResource(resourceName string) {
 
 func render(templateName string, w http.ResponseWriter, data interface{}) {
 	funcs := template.FuncMap{
-		"javascript_tag": train.JavascriptTag,
-		"stylesheet_tag": train.StylesheetTag,
-		"admin":          func() bool { return true },
-		"derbyConfig":    func(key string) interface{} { return derbyConfig[key] },
-		"eachLane":       eachLane,
+		"javascript_tag":  train.JavascriptTag,
+		"stylesheet_tag":  train.StylesheetTag,
+		"admin":           func() bool { return true },
+		"derbyConfig":     func(key string) interface{} { return derbyConfig[key] },
+		"eachLane":        eachLane,
+		"laneColumnWidth": laneColumnWidth,
 	}
 	tmpl, err := template.New("layout.tmpl").Funcs(funcs).ParseFiles("templates/layout.tmpl", "templates/"+templateName+".tmpl")
 	if err != nil {
@@ -116,4 +117,13 @@ func capitalize(str string) string {
 		return string(unicode.ToUpper(v)) + str[i+1:]
 	}
 	return ""
+}
+
+func columnWidthSplitInto(columnCount int) int {
+	layoutColumnCount := 12
+	return layoutColumnCount / columnCount
+}
+
+func laneColumnWidth() string {
+	return fmt.Sprintf("span%d", columnWidthSplitInto(derbyConfig["laneCount"].(int)))
 }
