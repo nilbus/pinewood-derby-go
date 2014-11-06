@@ -45,3 +45,13 @@ type Run struct {
 	ContestantId int32
 	HeatId       int32
 }
+
+func Ranked(db *gorm.DB) *gorm.DB {
+	return db.
+		Select("contestants.*, avg(runs.time) AS average_time").
+		Joins("LEFT JOIN runs ON contestants.id = runs.contestant_id").
+		Joins("LEFT JOIN heats ON runs.heat_id = heats.id").
+		Where("heats.sequence >= 0").
+		Group("contestants.id").
+		Order("average_time")
+}

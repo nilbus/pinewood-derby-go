@@ -19,8 +19,14 @@ func DashboardJson() string {
 	return string(json)
 }
 
-func contestantTimes() string {
-	return ""
+func contestantTimes() []float32 {
+	var contestants []Contestant
+	var times []float32 = make([]float32, 0)
+	db.Scopes(Ranked).Find(&contestants)
+	for _, contestant := range contestants {
+		times = append(times, contestant.AverageTime)
+	}
+	return times
 }
 
 func mostRecentHeat() string {
