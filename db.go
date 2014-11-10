@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
@@ -28,6 +29,7 @@ type Contestant struct {
 	Retired     bool `sql:"not null;default false"`
 	Runs        []Run
 	AverageTime float32
+	CreatedAt   time.Time
 }
 
 type Heat struct {
@@ -36,6 +38,7 @@ type Heat struct {
 	Status       string
 	ContestantId int32
 	Runs         []Run
+	CreatedAt    time.Time
 }
 
 type Run struct {
@@ -44,6 +47,7 @@ type Run struct {
 	Lane         int32
 	ContestantId int32
 	HeatId       int32
+	CreatedAt    time.Time
 }
 
 func Ranked(db *gorm.DB) *gorm.DB {
@@ -54,4 +58,16 @@ func Ranked(db *gorm.DB) *gorm.DB {
 		Where("heats.sequence >= 0").
 		Group("contestants.id").
 		Order("average_time")
+}
+
+func CompleteHeats(db *gorm.DB) *gorm.DB {
+	return db.
+		Where("status = 'complete'").
+		Order("sequence DESC, created_at DESC")
+}
+
+func MostRecentHeat(db *gorm.DB) *gorm.DB {
+	return db.
+		Scopes(CompleteHeats).
+		Limit(1)
 }
