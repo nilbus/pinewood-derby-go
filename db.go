@@ -71,3 +71,10 @@ func MostRecentHeat(db *gorm.DB) *gorm.DB {
 		Scopes(CompleteHeats).
 		Limit(1)
 }
+
+func UpcomingHeats(db *gorm.DB) *gorm.DB {
+	return db.
+		Where("status IN ('current', 'upcoming')").
+		Order("sequence").
+		Limit(3)
+}
