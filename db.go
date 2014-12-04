@@ -66,6 +66,12 @@ func CompleteHeats(db *gorm.DB) *gorm.DB {
 		Order("sequence DESC, created_at DESC")
 }
 
+func CurrentHeat(*gorm.DB) *gorm.DB {
+	return db.
+		Where("status = 'current'").
+		Limit(1)
+}
+
 func MostRecentHeat(db *gorm.DB) *gorm.DB {
 	return db.
 		Scopes(CompleteHeats).

@@ -84,5 +84,11 @@ func notice() string {
 }
 
 func device_status() string {
-	return ""
+	var current []Heat
+	db.Scopes(CurrentHeat).Find(&current)
+	if len(current) == 0 {
+		return "idle"
+	} else {
+		return "active"
+	}
 }
